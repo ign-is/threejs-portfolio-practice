@@ -1,8 +1,12 @@
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { Suspense, useState } from "react";
-import { myProjects } from "../constants";
 import { Canvas } from "@react-three/fiber";
 import { Center, OrbitControls } from "@react-three/drei";
+
+import { myProjects } from "../constants";
 import CanvasLoader from "../components/CanvasLoader";
+import DemoComputer from "../components/DemoComputer";
 
 const projectCount = myProjects.length;
 
@@ -18,6 +22,10 @@ const Projects = () => {
             }
         });
     };
+
+    useGSAP(() => {
+        gsap.fromTo(`.animatedText`, { opacity: 0 }, { opacity: 1, duration: 1, stagger: 0.2, ease: 'power2.inOut' });
+    }, [selectedProjectIndex]);
 
     const currentProject = myProjects[selectedProjectIndex];
 
@@ -80,7 +88,7 @@ const Projects = () => {
                         <Center>
                             <Suspense fallback={<CanvasLoader />}>
                                 <group scale={2} position={[0, -3, 0]} rotation={[0, -0.1, 0]}>
-                                    
+                                    <DemoComputer texture={currentProject.texture} />
                                 </group>
                             </Suspense>
                         </Center>
